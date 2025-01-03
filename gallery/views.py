@@ -18,10 +18,12 @@ def edit_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
         #"instance=product" means this form is linked to the existing product
-        form = ProductForm(request.POST, instance=product)
+        form = ProductForm(request.POST,request.FILES, instance=product)
         if form.is_valid():
             form.save()
             return redirect('product_list')
+        else:
+            print(form.errors)
     else:
         form = ProductForm(instance=product)
     return render(request, 'edit.html', {'form': form})
@@ -36,7 +38,7 @@ def delete_product(request, pk):
 
 def product_detail(request, pk):
     product = Product.objects.get(pk=pk)
-    return render(request, 'myapp/index2.html', {'product': product})
+    return render(request, 'index2.html', {'product': product})
 
 
 def home(request):
